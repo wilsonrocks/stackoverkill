@@ -1,0 +1,75 @@
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<!-- Alpine trooper favicon:)-->
+<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico')}}">
+
+<!-- If this is the display of a question, then we should be able to access the text without worrying about question.text which is throwing an error if question isn't defined --!>
+{% if question %}
+{% set text = question.text %}
+{% else %}
+{% set text = "" %}
+{% endif %}
+
+<head>
+    <title>StackOverKill {{text}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="StackOverKill" />
+    <meta property="og:description" content="{{text}} An anonymous Freeciv forum. Mainly about a long running game using the civ2civ3 ruleset.">
+    <meta property="og:url" content="{{request.url}}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="http://wilsonseverywhere.ddns.net:9988/static/oglogo.png" />
+</head>
+
+<style>
+.navbar-collapse.collapse {
+display: block!important;
+}
+
+.navbar-nav>li, .navbar-nav {
+float: left !important;
+}
+
+.navbar-nav.navbar-right:last-child {
+margin-right: -15px !important;
+}
+
+.navbar-right {
+float: right!important;
+}
+
+</style>
+
+<a href="{{url_for('Index')}}"><img src="/static/stackoverkill.png" class="center-block img-responsive" alt="Stack Overflow(Freeciv)"></a>
+<nav class="navbar navbar-default">
+    <div class="container">
+        <ul class="nav navbar-nav">
+            <li><a href="{{url_for('Index')}}">Home</a></li>
+            <li><a href="{{url_for('Ask')}}">Ask!</a></li>
+            <li><a href="{{url_for('Unanswered')}}">Unanswered</a></li>
+        </ul>
+
+        <form class="navbar-form navbar-left" method="get" name="search" action="{{url_for('Search')}}">
+            <div class="form-group">
+                <input type="text" name="searchterm" class="form-control" placeholder="Search">
+                <button class="btn btn-default" type="submit">
+                    <i class="glyphicon glyphicon-search"></i> 
+                </button>        
+            </div>
+
+
+</form>
+        </div>
+
+</nav>
+
+<div class="container">
+    {% block content %}
+    {% endblock %}
+</div>

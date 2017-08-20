@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<form action="" method="post" name="ask">
+    {{form.csrf_token}}
+    <div class="form-group">
+        Your Question:<br>
+        {{form.text(class="form-control")}}
+        <input type="submit" value="Ask!">
+
+    </div>
+</form>
+<p>Your question will be previewed on the home screen and in search results. As there is no topic line, you should summarise it in the first 100 characters if you want anybody to click on it.<p>
+<p>HTML will not work, but URLs will be linkified. If you want to include an image - host it on something like <a href="https://imgbb.com/">imgbb</a>(other image hosting sites are available).</p>
+
+{% endblock %}

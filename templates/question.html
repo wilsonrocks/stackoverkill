@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="jumbotron">
+    <blockquote class="text-center">
+        <p>
+        <b>{{question.text |safe| urlize | hashtagize}}</b>
+        </p>
+        <footer>{{question.timestamp | our_timestamp}}<br>
+            <a href="whatsapp://send?text=Check out this question on StackOverKill - {{request.base_url}}"><img src="/static/whatsapp.png" class="hidden-md hidden-lg"</img></a>
+        </footer>
+    </blockquote>
+</div>
+
+{% if question.answers %}
+    <div class="container" ><div class="jumbotron" style="overflow-wrap:break-word;">
+
+        {% for answer in question.answers %}
+        <a name="answer{{answer.id}}"></a>
+        <blockquote>
+            <p>        {{answer.text | urlize | hashtagize | safe}} <p>
+        <footer>
+            {{answer.timestamp | our_timestamp}}
+            
+            <span> 
+                <a href="{{url_for("Like",question=question.id,answer=answer.id)}}"><img src="/static/happy{{loop.cycle('F','M')}}.png"></img></a>
+                <span class="badge">{{answer.likes}}</span>
+            </span>
+
+        </footer>                
+        </blockquote>
+        {% endfor %}
+
+
+    </div>
+
+    
+{% else %}    
+    <p>This question has not been answered yet! We need YOU!</p>
+{% endif %}
+
+<form action="{{url_for('Submit_Answer')}}" method="post" name="answer">
+    {{form.csrf_token}}
+    {{form.id}}
+    Answer this question:
+    <div class="form-group">
+        {{form.text(class="form-control")}}
+        <input type="submit" value="Answer!">
+    </div>
+</form>
+
+
+
+{% endblock %}
