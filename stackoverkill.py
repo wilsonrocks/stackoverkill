@@ -1,5 +1,5 @@
 from flask import Flask, render_template, abort, url_for, redirect, request, Markup, jsonify
-from models import Question, Answer, db
+from models import Question, Answer, db, Famq
 from forms import New_Question, New_Answer
 import secrets
 
@@ -82,6 +82,11 @@ def Like(question,answer):
     a.likes +=1
     a.save()
     return redirect(url_for('Question_view',id=question)+"#answer{}".format(answer))
+
+@app.route('/famq')
+def Famqs():
+    return render_template('famq.html',famqs=Famq.select())
+
 
 #filters
 

@@ -5,7 +5,6 @@ from datetime import datetime
 
 import secrets
 
-#db = SqliteDatabase("posts.db")
 db = PostgresqlDatabase(secrets.POSTGRES_DB,
         user=secrets.POSTGRES_USER,
         password=secrets.POSTGRES_PASSWORD,
@@ -43,3 +42,13 @@ class Answer(Model):
     likes = IntegerField(default=0)
     def display_time(self):
         return self.timestamp.strftime("%H:%M on %A %d %B %Y")
+
+class Famq(Model):
+    class Meta:
+        database = db
+
+    question = TextField()
+    answer = TextField()
+
+
+

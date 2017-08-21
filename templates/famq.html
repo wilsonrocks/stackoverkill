@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h3>Frequently Asked Meta Questions</h3>
+
+{% for famq in famqs %}
+<h4>{{famq.question | safe}}</h4>
+<p>{{famq.answer | safe | urlize}}</p>
+{% endfor %}
+
+{% endblock %}
