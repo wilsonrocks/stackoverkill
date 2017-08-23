@@ -18,7 +18,7 @@
         {% for answer in question.answers %}
         <a name="answer{{answer.id}}"></a>
         <blockquote>
-            <p>        {{answer.text | urlize | hashtagize | safe}} <p>
+            <p>        {{answer.text | safe | urlize | hashtagize}} <p>
         <footer>
             {{answer.timestamp | our_timestamp}}
             
