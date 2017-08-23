@@ -35,13 +35,13 @@ def Question_view(id):
 @app.route('/all')
 def All_questions():
     questions = Question.select().order_by(-Question.timestamp)
-    return(render_template("question_set.html",questions=questions))
+    return(render_template("question_set.html",questions=questions, nohits='There seem to be no questions here... This could be an error, or there might have been none asked. Try writing one!'))
 
 @app.route('/unanswered')
 def Unanswered():
     answers = {a.question.id for a in Answer.select().join(Question)}
     questions = Question.select().where(~(Question.id << answers))
-    return render_template('question_set.html',questions=questions) 
+    return render_template('question_set.html',questions=questions, nohits='Great news! There seems to be no unanswered questions. Well done, team! However, you can always ask a new one...') 
 
 @app.route('/ask', methods=['GET', 'POST'])
 def Ask():
@@ -63,7 +63,7 @@ def Submit_Answer():
 def Search():
     term = request.args.get("searchterm",'')
     questions = Question.select().where(Question.text.contains(term))
-    return render_template('question_set.html',questions=questions)
+    return render_template('question_set.html',questions=questions, nohits='No results for {}, why not ask a new question?'.format(term))
 
 @app.route('/get_likes', methods=['POST'])
 def Get_likes():
