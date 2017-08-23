@@ -4,7 +4,7 @@
 <div class="jumbotron">
     <blockquote class="text-center">
         <p>
-        <b>{{question.text |safe| urlize | hashtagize}}</b>
+        <b>{{question.text | safe| urlize | hashtagize |  nl2br}}</b>
         </p>
         <footer>{{question.timestamp | our_timestamp}}<br>
             <a href="whatsapp://send?text=Check out this question on StackOverKill - {{request.base_url}}"><img src="/static/whatsapp.png" class="hidden-md hidden-lg"</img></a>
@@ -18,7 +18,7 @@
         {% for answer in question.answers %}
         <a name="answer{{answer.id}}"></a>
         <blockquote>
-            <p>        {{answer.text | urlize | hashtagize | safe}} <p>
+            <p>        {{answer.text | safe | urlize | hashtagize | nl2br}} <p>
         <footer>
             {{answer.timestamp | our_timestamp}}
             
@@ -49,6 +49,7 @@
     </div>
 </form>
 
+<p>HTML will not work, but URLs will be linkified. If you want to include an image - host it on something like <a href="https://imgbb.com/">imgbb</a>(other image hosting sites are available).</p>
 
 
 {% endblock %}

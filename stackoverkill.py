@@ -101,8 +101,13 @@ def add_hash(matchobj):
 
 @app.template_filter('hashtagize')
 def hashtag_filter(text):
-    
-    return re.sub(r'#(\w|\d)*',add_hash,text)
+    return Markup(re.sub(r'#(\w|\d)*',add_hash,text))
+
+
+
+@app.template_filter('nl2br')
+def nl2br(text):
+    return Markup(re.sub(r'\n', Markup('<br>\n'),text))
     
     
 if __name__ == '__main__':
