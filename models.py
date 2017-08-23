@@ -2,13 +2,14 @@ from peewee import SqliteDatabase, PostgresqlDatabase
 from peewee import Model
 from peewee import CharField, DateTimeField, ForeignKeyField, TextField, IntegerField
 from datetime import datetime
+from playhouse.postgres_ext import PostgresqlExtDatabase, Match
 
 import secrets
 
-db = PostgresqlDatabase(secrets.POSTGRES_DB,
+db = PostgresqlExtDatabase(secrets.POSTGRES_DB,
         user=secrets.POSTGRES_USER,
         password=secrets.POSTGRES_PASSWORD,
-        host='127.0.0.1')
+        host='127.0.0.1', register_hstore=False)
 
 class Question(Model):
     class Meta:

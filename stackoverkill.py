@@ -1,5 +1,5 @@
 from flask import Flask, render_template, abort, url_for, redirect, request, Markup, jsonify
-from models import Question, Answer, db, Famq
+from models import Question, Answer, db, Famq, Match
 from forms import New_Question, New_Answer
 import secrets
 
@@ -62,7 +62,7 @@ def Submit_Answer():
 @app.route('/search')
 def Search():
     term = request.args.get("searchterm",'')
-    questions = Question.select().where(Question.text.contains(term))
+    questions = Question.select().where(Match(Question.text,term))
     return render_template('question_set.html',questions=questions, nohits='No results for {}, why not ask a new question?'.format(term))
 
 @app.route('/get_likes', methods=['POST'])
