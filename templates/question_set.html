@@ -6,7 +6,7 @@
 <div class="jumbotron" style="overflow-wrap:break-word;">
     <blockquote>
         <p>
-            <a href="{{url_for('Question_view',id=question.id)}}">{{question.text|truncate(100) |safe}}</a>
+            <a href="{{url_for('Question_view',id=question.id)}}">{{question.text|truncate(100) |safe | nl2br}}</a>
         </p>
         <footer>
             <!--Asked {{question.timestamp | our_timestamp}}<br>--!>
