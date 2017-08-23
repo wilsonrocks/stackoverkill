@@ -63,7 +63,12 @@ def Submit_Answer():
 def Search():
     term = request.args.get("searchterm",'')
     questions = Question.select().where(Match(Question.text,term))
-    return render_template('question_set.html',questions=questions, nohits='No results for {}, why not ask a new question?'.format(term))
+    answers = Answer.select(Answer.question).where(Match(Answer.text,term))
+    answer_ids = {a.question.id for a in answers}
+    questions_with_answers = Question.select().where(Question.id << answer_ids)
+    
+    query = (questions | questions_with_answers)
+    return render_template('question_set.html',questions=query, nohits='No results for {}, why not ask a new question?'.format(term))
 
 @app.route('/get_likes', methods=['POST'])
 def Get_likes():
