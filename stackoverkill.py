@@ -2,12 +2,19 @@ from flask import Flask, render_template, abort, url_for, redirect, request, Mar
 from models import Question, Answer, db, Famq, Match
 from forms import New_Question, New_Answer
 import secrets
-
+from playhouse.postgres_ext import fn
 import re
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = secrets.SECRET_KEY
 app.config['TEMPLATES_AUTO_RELOAD'] = True
+
+import string
+
+def prep_string(s):
+    strip_table = str.maketrans("","",string.punctuation)
+    return " & ".join(s.translate(strip_table).split())
+
 
 @app.before_request
 def db_connect():
@@ -47,7 +54,8 @@ def Unanswered():
 def Ask():
     form = New_Question()
     if form.validate_on_submit(): 
-        q = Question.create(text=form.text.data) #was adding all confusing "<textarea>" stuff till I realised to add .data on the end
+        text = form.text.data
+        q = Question.create(text=text) #was adding all confusing "<textarea>" stuff till I realised to add .data on the end
         return redirect(url_for('Question_view',id=q.id))
 
     return render_template('newquestion.html', form=form)
@@ -62,11 +70,11 @@ def Submit_Answer():
 @app.route('/search')
 def Search():
     term = request.args.get("searchterm",'')
-    questions = Question.select().where(Match(Question.text,term))
-    answers = Answer.select(Answer.question).where(Match(Answer.text,term))
+    questions = Question.select().where(Match(Question.text,prep_string(term)))
+    answers = Answer.select(Answer.question).where(Match(Answer.text,prep_string(term)))
     answer_ids = {a.question.id for a in answers}
     questions_with_answers = Question.select().where(Question.id << answer_ids)
-    
+
     query = (questions | questions_with_answers)
     return render_template('question_set.html',questions=query, nohits='No results for {}, why not ask a new question?'.format(term))
 
