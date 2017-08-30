@@ -24,7 +24,7 @@
     <meta property="og:description" content="{{text}} An anonymous Freeciv forum. Mainly about a long running game using the civ2civ3 ruleset.">
     <meta property="og:url" content="{{request.url}}" />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="http://wilsonseverywhere.ddns.net:9988/static/oglogo.png" />
+    <meta property="og:image" content="{{url_for('static',filename='oglogo.png',_external=True)}}" />
 </head>
 
 <style>
