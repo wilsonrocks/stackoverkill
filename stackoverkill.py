@@ -2,7 +2,10 @@ from flask import Flask, render_template, abort, url_for, redirect, request, Mar
 from models import Question, Answer, db, Famq, Match
 from forms import New_Question, New_Answer
 import secrets
+
 from playhouse.postgres_ext import fn
+import tweepy
+
 import re
 
 app = Flask(__name__)
@@ -56,6 +59,11 @@ def Ask():
     if form.validate_on_submit(): 
         text = form.text.data
         q = Question.create(text=text) #was adding all confusing "<textarea>" stuff till I realised to add .data on the end
+    
+        #construct a tweet
+        tweet = "New Question: {}".format(url_for('Question_view',id=q.id,_external=True))
+        do_tweet(tweet)
+
         return redirect(url_for('Question_view',id=q.id))
 
     return render_template('newquestion.html', form=form)
@@ -122,6 +130,13 @@ def hashtag_filter(text):
 def nl2br(text):
     return Markup(re.sub(r'\n', Markup('<br>\n'),text))
     
+#helpers
+def do_tweet(text):
+    auth = tweepy.OAuthHandler(secrets.TWITTER_CONSUMER_KEY, secrets.TWITTER_CONSUMER_SECRET)
+    auth.set_access_token(secrets.TWITTER_ACCESS_TOKEN, secrets.TWITTER_ACCESS_SECRET)
+    api = tweepy.API(auth)
+    api.update_status(text)
+
     
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',port=6000,debug=True)
+    app.run(host='0.0.0.0',port=8000,debug=True)
