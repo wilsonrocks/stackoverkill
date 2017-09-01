@@ -16,7 +16,7 @@ class Question(Model):
         database = db
         order_by = ('-timestamp',)
     text = TextField()
-    timestamp = DateTimeField(default=datetime.now())
+    timestamp = DateTimeField(default=datetime.now)
     def display_time(self):
         return self.timestamp.strftime("%H:%M on %A %d %B %Y")
     
@@ -39,7 +39,7 @@ class Answer(Model):
 
     text = TextField()
     question = ForeignKeyField(Question, related_name = "answers", on_delete='CASCADE')
-    timestamp = DateTimeField(default=datetime.now())
+    timestamp = DateTimeField(default=datetime.now)
     likes = IntegerField(default=0)
     def display_time(self):
         return self.timestamp.strftime("%H:%M on %A %d %B %Y")
