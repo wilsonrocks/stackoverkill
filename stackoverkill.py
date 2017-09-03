@@ -61,7 +61,7 @@ def Ask():
         q = Question.create(text=text) #was adding all confusing "<textarea>" stuff till I realised to add .data on the end
     
         #construct a tweet
-        tweet = "New Question: {}".format(url_for('Question_view',id=q.id,_external=True))
+        tweet = "New Question: {} {}".format(q.text[:80],url_for('Question_view',id=q.id,_external=True))
         do_tweet(tweet)
 
         return redirect(url_for('Question_view',id=q.id))
